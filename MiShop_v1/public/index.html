@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="author" content="order by dede58.com" />
+	<title>小米商城</title>
+	<link rel="stylesheet" type="text/css" href="./css/style.css">
+</head>
+
+<body onload="index()">
+	<!-- start header -->
+	<header>
+		<div class="top center">
+			<div class="left fl">
+				<ul>
+					<div id="left_title">lefttitle</div>
+					<div class="clear"></div>
+				</ul>
+			</div>
+			<div class="right fr">
+				<div class="gouwuche fr"><a href="cart.html">购物车</a></div>
+				<div class="fr">
+					<ul>
+						<li><a id="login" href="./login.html" target="_blank">登录</a></li>
+						<li>|</li>
+						<li><a href="./register.html" target="_blank">注册</a></li>
+						<li>|</li>
+						<li><a href="">消息通知</a></li>
+					</ul>
+				</div>
+				<div class="clear"></div>
+			</div>
+			<div class="clear"></div>
+		</div>
+	</header>
+	<!--end header -->
+
+	<!-- start banner_x -->
+	<div class="banner_x center">
+		<a href="./index.html" target="_blank">
+			<div class="logo fl"></div>
+		</a>
+		<a href="">
+			<div class="ad_top fl"></div>
+		</a>
+		<div class="nav fl">
+			<ul id="nav_list">
+			</ul>
+		</div>
+		<div class="search fr">
+			<form action="" method="post">
+				<div class="text fl">
+					<input type="text" class="shuru" placeholder="小米6&nbsp;小米MIX现货">
+				</div>
+				<div class="submit fl">
+					<input class="sousuo" value="搜索" />
+				</div>
+				<div class="clear"></div>
+			</form>
+			<div class="clear"></div>
+		</div>
+	</div>
+	<!-- end banner_x -->
+
+	<!-- start banner_y -->
+	<div class="banner_y center">
+		<div class="nav">
+			<ul id="class_title">
+			</ul>
+		</div>
+	</div>
+	<div class="sub_banner center">
+		<div class="sidebar fl">
+			<div class="fl"><a href=""><img src="./image/hjh_01.gif"></a></div>
+			<div class="fl"><a href=""><img src="./image/hjh_02.gif"></a></div>
+			<div class="fl"><a href=""><img src="./image/hjh_03.gif"></a></div>
+			<div class="fl"><a href=""><img src="./image/hjh_04.gif"></a></div>
+			<div class="fl"><a href=""><img src="./image/hjh_05.gif"></a></div>
+			<div class="fl"><a href=""><img src="./image/hjh_06.gif"></a></div>
+			<div class="clear"></div>
+		</div>
+		<div class="datu fl"><a href=""><img src="./image/hongmi4x.png" alt=""></a></div>
+		<div class="datu fl"><a href=""><img src="./image/xiaomi5.jpg" alt=""></a></div>
+		<div class="datu fr"><a href=""><img src="./image/pinghengche.jpg" alt=""></a></div>
+		<div class="clear"></div>
+
+
+	</div>
+	<!-- start danpin -->
+	<div class="danpin center">
+		<div class="biaoti center">小米明星单品</div>
+		<div class="main center" id="star_list"></div>
+	</div>
+	<div class="peijian w">
+		<div class="biaoti center" id="peijian_class"></div>
+		<div class="main center">
+			<div class="content" id="floor1">
+			</div>
+			<div class="content" id="floor2">
+			</div>
+		</div>
+	</div>
+	<footer class="mt20 center">
+		<div class="mt20">小米商城|MIUI|米聊|多看书城|小米路由器|视频电话|小米天猫店|小米淘宝直营店|小米网盟|小米移动|隐私政策|Select Region</div>
+		<div>©mi.com 京ICP证110507号 京ICP备10046444号 京公网安备11010802020134号 京网文[2014]0059-0009号</div>
+		<div>违法和不良信息举报电话：185-0130-1238，本网站所列数据，除特殊说明，所有数据均出自我司实验室测试</div>
+	</footer>
+</body>
+<script>
+	// top导航
+	var left_get = function () {
+		var xhr = new XMLHttpRequest();
+		xhr.onreadystatechange = function () {
+			if (xhr.readyState == 4 && xhr.status == 200) {
+				var result = xhr.responseText;
+				var arr = JSON.parse(result)
+				var textHTML = "";
+				for (var i = 0; i < arr.length - 1; i++) {
+					textHTML += `<li><a href="${arr[i].href}">${arr[i].title}</a></li>
+					<li>|</li>`
+				}
+				left_title.innerHTML = textHTML + `<li><a href="">Select Region</a></li>`
+			}
+		}
+		xhr.open("get", "/ajax/left_title", true);
+		xhr.send();
+	}
+	// top-商品导航
+	var lt_get = function () {
+		var xhr = new XMLHttpRequest();
+		xhr.onreadystatechange = function () {
+			if (xhr.readyState == 4 && xhr.status == 200) {
+				var result = xhr.responseText;
+				var arr = JSON.parse(result)
+				var textHTML = "";
+				for (var i = 0; i < arr.length; i++) {
+					textHTML += `<li><a href="${arr[i].href}" target="_blank">${arr[i].title}</a></li>`
+				}
+			}
+			nav_list.innerHTML = textHTML + `<div class="clear"></div>`
+		}
+		xhr.open("get", "/ajax/list_title", true);
+		xhr.send();
+	}
+	// left-导航
+	var mc_get = function () {
+		var xhr = new XMLHttpRequest();
+		xhr.onreadystatechange = function () {
+			if (xhr.readyState == 4 && xhr.status == 200) {
+				var result = xhr.responseText;
+				var arr = JSON.parse(result)
+				var pops = document.querySelectorAll(".pop")
+				var left = "";
+				var center = "";
+				var right = "";
+				for (var i = 0; i < arr.length; i++) {
+					if (i <= 5) {
+						left += `					
+						<div>
+							<div class="xuangou_left fl">
+								<a href="${arr[i].href}">
+									<div class="img fl"><img src="${arr[i].pic}" alt=""></div>
+									<span class="fl">${arr[i].dname}</span>
+									<div class="clear"></div>
+								</a>
+							</div>
+							<div class="xuangou_right fr"><a href="${arr[i].href}" target="_blank">选购</a></div>
+							<div class="clear"></div>
+						</div>
+					`
+					} else {
+						center += `					
+						<div>
+							<div class="xuangou_left fl">
+								<a href="">
+									<div class="img fl"><img src="${arr[i].pic}" alt=""></div>
+									<span class="fl">${arr[i].dname}</span>
+									<div class="clear"></div>
+								</a>
+							</div>
+							<div class="xuangou_right fr"><a href="${arr[i].href}" target="_blank">选购</a></div>
+							<div class="clear"></div>
+						</div>
+					`
+					}
+				}
+				right += `
+				<div>
+					<div class="xuangou_left fl">
+						<a href="">
+							<div class="img fl"><img src="./image/compare.jpg" alt=""></div>
+							<span class="fl">对比手机</span>
+							<div class="clear"></div>
+						</a>
+					</div>
+					<!-- <div class="xuangou_right fr"><a href="">选购</a></div> -->
+					<div class="clear"></div>
+				</div>
+				<div>
+					<div class="xuangou_left fl">
+						<a href="">
+							<div class="img fl"><img src="./image/mimobile.jpg" alt=""></div>
+							<span class="fl">小米移动&nbsp;电话卡</span>
+							<div class="clear"></div>
+						</a>
+					</div>
+					<!-- <div class="xuangou_right fr"><a href="">选购</a></div> -->
+					<div class="clear"></div>
+				</div>
+			`;
+				for (var i = 0; i < pops.length; i++) {
+					pops[i].innerHTML +=
+						`<div class="left fl">` + left + `</div><div class="ctn fl">` + center + `</div><div class="right fl">` +
+						right +
+						`</div><div class="clear"></div>`
+				}
+			}
+		}
+		xhr.open("get", "/ajax/mclass", true);
+		xhr.send();
+	}
+	// left-class
+	var left_class = function () {
+		var xhr = new XMLHttpRequest();
+		xhr.onreadystatechange = function () {
+			if (xhr.readyState == 4 && xhr.status == 200) {
+				var result = xhr.responseText;
+				var arr = JSON.parse(result)
+				var textHTML = "";
+				for (var i = 0; i < 20;) {
+					textHTML +=
+						`
+					<li id="class_title">
+					<div>
+						<a href="">${arr[0].title}</a>
+						<a href="">${arr[i+1].title}</a>
+					</div>
+					<div class="pop"></div>
+				</li>
+					`
+					i += 2;
+				}
+				class_title.innerHTML += textHTML
+			}
+		}
+		xhr.open("get", "/ajax/class_title", true);
+		xhr.send();
+	}
+	// 明星单品
+	var star = function () {
+		var xhr = new XMLHttpRequest();
+		xhr.onreadystatechange = function () {
+			if (xhr.readyState == 4 && xhr.status == 200) {
+				var result = xhr.responseText;
+				var arr = JSON.parse(result)
+				var textHTML = "";
+				for (var i = 0; i < arr.length; i++) {
+					textHTML += `<div class="mingxing fl">
+				<div class="sub_mingxing"><a href="${arr[i].href}"><img src="${arr[i].pic}" alt=""></a></div>
+				<div class="pinpai"><a href="">${arr[i].dname}</a></div>
+				<div class="youhui">${arr[i].title}</div>
+				<div class="jiage">${arr[i].price}元</div>
+			</div>`
+				}
+				star_list.innerHTML = textHTML + `<div class="clear"></div>`
+			}
+		}
+		xhr.open("get", "/ajax/star", true);
+		xhr.send();
+	}
+
+	// 配件
+	var p_class = function () {
+		var xhr = new XMLHttpRequest();
+		xhr.onreadystatechange = function () {
+			if (xhr.readyState == 4 && xhr.status == 200) {
+				var result = xhr.responseText;
+				var arr = JSON.parse(result)
+				var textHTML1 = "";
+				var textHTML2 = "";
+				peijian_class.innerHTML = arr[0].p_class
+				floor1.innerHTML = `<div class="remen fl"><a href=""><img src="./image/peijian1.jpg"></a></div>`
+				floor2.innerHTML = `<div class="remen fl"><a href=""><img src="./image/peijian6.jpg"></a></div>`
+				for (var i = 0; i < arr.length; i++) {
+					if (i <= 3) {
+						textHTML1 += `<div class="remen fl">
+					<div class="xinpin"><span>新品</span></div>
+					<div class="tu"><a href=""><img src="${arr[i].pic}"></a></div>
+					<div class="miaoshu"><a href="">${arr[i].title}</a></div>
+					<div class="jiage">${arr[i].price}元</div>
+					<div class="pingjia">${arr[i].pj}人评价</div>
+					<div class="piao">
+						<a href="">
+							<span>发货速度很快！很配小米6！</span>
+							<span>来至于mi狼牙的评价</span>
+						</a>
+					</div>
+				</div>`
+					} else {
+						textHTML2 += `<div class="remen fl">
+					<div class="xinpin"><span>新品</span></div>
+					<div class="tu"><a href=""><img src="${arr[i].pic}"></a></div>
+					<div class="miaoshu"><a href="">${arr[i].title}</a></div>
+					<div class="jiage">${arr[i].price}元</div>
+					<div class="pingjia">${arr[i].pj}人评价</div>
+					<div class="piao">
+						<a href="">
+							<span>发货速度很快！很配小米6！</span>
+							<span>来至于mi狼牙的评价</span>
+						</a>
+					</div>
+				</div>`
+					}
+				}
+				textHTML1 += `<div class="clear"></div>`;
+				textHTML2 += `<div class="remenlast fr">
+					<div class="hongmi"><a href=""><img src="./image/hongmin4.png" alt=""></a></div>
+					<div class="liulangengduo"><a href=""><img src="./image/liulangengduo.png" alt=""></a></div>
+				</div>
+				<div class="clear"></div>`;
+				floor1.innerHTML += textHTML1
+				floor2.innerHTML += textHTML2
+			}
+		}
+		xhr.open("get", "/ajax/class", true);
+		xhr.send();
+	}
+
+	var getName=function(){
+		if (document.cookie =="") {
+			console.log("你还没有光顾我的Mishop")
+		} else {
+			login.href="user_info.html"
+			login.innerHTML=document.cookie
+		}
+	}
+
+	function index() {
+		left_get()
+		left_class()
+		lt_get()
+		mc_get()
+		star()
+		p_class()
+		getName()
+	}
+</script>
+
+</html>
